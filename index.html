@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <!-- React 環境 -->
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <!-- 解析 JSX -->
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script> -->
+        <style type="text/tailwindcss">
+            @layer components {
+                .btn {
+                    @apply rounded-md py-2 px-4 text-center flex items-center focus:outline-none focus:ring-2;
+                }
+                .btn-primary {
+                    @apply bg-atrovirens-500 text-white hover:bg-atrovirens-400 focus:ring-atrovirens-200 focus:ring-offset-2 focus:ring-offset-atrovirens-50 disabled:bg-atrovirens-500;
+                }
+                .btn-outline-primary {
+                    @apply border-solid border border-atrovirens-500 text-atrovirens-500 hover:bg-atrovirens-500 hover:text-white focus:ring-atrovirens-200 focus:ring-offset-2 focus:ring-offset-atrovirens-50 disabled:bg-atrovirens-500;
+                }
+                .btn-primary-soft {
+                    @apply bg-atrovirens-50 text-atrovirens-500 hover:bg-atrovirens-100 hover:text-atrovirens-600 focus:ring-atrovirens-600 disabled:opacity-75 disabled:bg-atrovirens-50 disabled:text-atrovirens-500;
+                }
+                .btn-sm {
+                    @apply text-sm py-2 px-3;
+                }
+                .btn-lg {
+                    @apply text-2xl py-4 px-6;
+                }
+            }
+        </style>
+        <!-- 自己的 JS -->
+        <script src="all.js" type="text/babel"></script>
+    </head>
+    <body>
+        <div class="p-5 bg-slate-50" id="root" />
+    </body>
+    <style>
+        #root {
+            padding: 10px;
+        }
+
+        img {
+            max-width: 300px;
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: 30px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</html>
