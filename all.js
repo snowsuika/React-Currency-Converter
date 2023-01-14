@@ -31,12 +31,16 @@ const App = () => {
         { name: '印尼幣', rate: 420.17, TWD: 0 },
     ];
     // state(data)
+    const [currencies, setCurrencies] = useState(RATE_TABLE); // 所有幣別
     const [inputTWVal, setInputTWVal] = useState(0); // 輸入要更換的金額 ipnut
     const [errorMessage, setErrorMessage] = useState(''); // 錯誤訊息
-    const [currencies, setCurrencies] = useState(RATE_TABLE); // 所有幣別
 
     // 新增幣別功能
     const [newCurrency, setNewCurrency] = useState({ name: '', rate: 0, TWD: 0 }); // 新增幣別 input
+
+    // 兌換紀錄估功能
+    const [wallet, setWallet] = useState(5000);
+    const [records, setRecords] = useState([]);
 
     // methods
     const onCalculateTWD = () => {
@@ -78,6 +82,16 @@ const App = () => {
         setNewCurrency({ name: '', rate: 0, TWD: 0 });
     };
 
+    const onExchange = (currency, rate) => {
+        // 檢核錢包金額是否足夠
+        if (wallet < inputTWVal) {
+            return alert('錢包金額不足！');
+        }
+
+        setWallet(wallet - inputTWVal);
+        setRecords([...records, { TWD: inputTWVal, currency: currency, amount: inputTWVal * rate }]);
+    };
+
     return (
         <>
             <div className="container mx-auto">
@@ -95,7 +109,7 @@ const App = () => {
                                 onChange={e => setInputTWVal(e.target.value)}
                             />
                             <button className="btn btn-sm btn-primary ml-1" type="button" onClick={onCalculateTWD}>
-                                計算
+                                試算可更換金額
                             </button>
                         </div>
                         <span className="text-red-600">{errorMessage}</span>
@@ -120,7 +134,9 @@ const App = () => {
                                                 <button
                                                     className="btn btn-sm btn-primary ml-1"
                                                     type="button"
-                                                    onClick={onCalculateTWD}
+                                                    onClick={() => {
+                                                        onExchange(name, rate);
+                                                    }}
                                                 >
                                                     更換
                                                 </button>
@@ -163,7 +179,32 @@ const App = () => {
                     </div>
 
                     <div className="w-1/2">
-                        <h2>交易紀錄</h2>3
+                        <h2>交易紀錄</h2>
+                        <hr></hr>
+                        目前餘額：{wallet} 元
+                        <div className={records.length !== 0 ? 'hidden' : 'text-center my-2'}>尚無兌換紀錄</div>
+                        <div className={records.length === 0 ? 'hidden' : ''}>
+                            <table className="table-auto border-collapse border border-slate-500">
+                                <thead>
+                                    <tr>
+                                        <th className="bg-slate-200 border border-slate-300 p-2">花費台幣</th>
+                                        <th className="bg-slate-200 border border-slate-300 p-2">兌換幣別</th>
+                                        <th className="bg-slate-200 border border-slate-300 p-2">已兌換</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {records.map(({ TWD, currency, amount }, index) => {
+                                        return (
+                                            <tr key={'record' + index}>
+                                                <td className="border border-slate-300 p-2">{TWD}</td>
+                                                <td className="border border-slate-300 p-2">{currency}</td>
+                                                <td className="border border-slate-300 p-2">{amount}</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
