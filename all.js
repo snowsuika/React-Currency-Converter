@@ -35,6 +35,9 @@ const App = () => {
     const [errorMessage, setErrorMessage] = useState(''); // 錯誤訊息
     const [currencies, setCurrencies] = useState(RATE_TABLE); // 所有幣別
 
+    // 新增幣別功能
+    const [newCurrency, setNewCurrency] = useState({ name: '', rate: 0, TWD: 0 }); // 新增幣別 input
+
     // methods
     const onCalculateTWD = () => {
         // verification form
@@ -61,6 +64,20 @@ const App = () => {
             return calculatedCurrencies;
         });
     };
+    const onAddCurrency = () => {
+        // verification form
+        const isEmpty = newCurrency.name === '' || newCurrency.rate === '' || newCurrency.rate === null; // 驗證 input 是否填寫正確
+        const isDuplicate = currencies.some(item => item.name === newCurrency.name); // 檢核新增的幣別是否已經重複
+
+        if (isEmpty) alert('欄位不得為空，或欄位填寫不正確！');
+        if (isDuplicate) alert('該貨幣已存在！');
+
+        setCurrencies([...currencies, newCurrency]);
+
+        // reset input
+        setNewCurrency({ name: '', rate: 0, TWD: 0 });
+    };
+
     return (
         <>
             <div className="container mx-auto">
@@ -111,6 +128,36 @@ const App = () => {
                                         </tr>
                                     );
                                 })}
+                                <tr>
+                                    <td className="border border-slate-300 p-2">
+                                        <input
+                                            type="text"
+                                            className="border border-solid border-slate-600 rounded px-2"
+                                            placeholder="請輸入幣別"
+                                            value={newCurrency.name}
+                                            onChange={e => setNewCurrency({ ...newCurrency, name: e.target.value })}
+                                        />
+                                    </td>
+                                    <td className="border border-slate-300 p-2">
+                                        <input
+                                            type="number"
+                                            className="border border-solid border-slate-600 rounded px-2"
+                                            placeholder="請輸入匯率"
+                                            value={newCurrency.rate || 0}
+                                            onChange={e => setNewCurrency({ ...newCurrency, rate: e.target.value })}
+                                        />
+                                    </td>
+                                    <td className="border border-slate-300 p-2">-</td>
+                                    <td className="border border-slate-300 p-2">
+                                        <button
+                                            className="btn btn-sm btn-outline-primary ml-1"
+                                            type="button"
+                                            onClick={onAddCurrency}
+                                        >
+                                            新增
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
